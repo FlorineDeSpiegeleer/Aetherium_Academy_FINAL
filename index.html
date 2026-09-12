@@ -428,8 +428,10 @@ button{cursor:pointer}
         <div id="dialogueSpeaker" class="speaker"></div>
         <div id="dialogueText" class="dialogue-text"></div>
         <div class="dialogue-controls">
+          <button class="text-btn dark" onclick="previousDialogueLine()">← Previous line</button>
+          <button class="text-btn dark" id="pauseBtnInline" onclick="pauseDialogue()">⏸ Pause</button>
           <button class="text-btn dark" onclick="repeatLine()">🔊 Repeat</button>
-          <button class="text-btn dark" onclick="skipLine()">Volgende zin →</button>
+          <button class="text-btn dark" onclick="skipLine()">Next line →</button>
         </div>
       </div>
     </div>
@@ -694,7 +696,7 @@ const WORLD_INTRO = [
   {title:"The Night of the Hollow Star",text:"Tonight is different. The Astral Convergence has returned: a rare academy celebration when observatories reopen, old instruments are brought from storage and the entire school stays awake long after the final bell."},
   {title:"But first…",text:"Before the ceremony begins, Aetherium needs to know that each of you can receive a private message. Unlock your own story on your phone. What you see there belongs to you."}
 ];
-const WORLD_INTRO_AUDIO = {"0": "assets/audio/intro_01.mp3", "1": "assets/audio/intro_02.mp3", "2": "assets/audio/intro_03.mp3", "3": "assets/audio/intro_04.mp3"};
+const WORLD_INTRO_AUDIO = {"0": "assets/audio/intro_01.mp3?v=HOTFIX1", "1": "assets/audio/intro_02.mp3?v=HOTFIX1", "2": "assets/audio/intro_03.mp3?v=HOTFIX1", "3": "assets/audio/intro_04.mp3?v=HOTFIX1"};
 let worldIntroAudio = null;
 
 function stopWorldIntroNarration(){
@@ -870,7 +872,7 @@ const INTERVIEW_BG={"Rowan Vale":"common","Kestrel Ardan":"archive","Maeve Sol":
    Each actor has one master recording. The game seeks to the matching line.
    If a remote master is unavailable, browser TTS is used automatically.
 */
-const ROLE_AUDIO = {"Narrator": "assets/audio/narrator.mp3", "Rector Cael": "assets/audio/rector_cael.mp3", "Rowan Vale": "assets/audio/rowan_vale.mp3", "Kestrel Ardan": "assets/audio/kestrel_ardan.mp3", "Maeve Sol": "assets/audio/maeve_sol.mp3", "Elias Thorne": "assets/audio/elias_thorne.mp3", "Lyra Voss": "assets/audio/lyra_voss.mp3", "Professor Ilyra Fen": "assets/audio/professor_ilyra_fen.mp3", "Academy Voice": "assets/audio/academy_voice.mp3", "Unknown": "assets/audio/unknown_voice.mp3"};
+const ROLE_AUDIO = {"Narrator": "https://www.aidocmaker.com/g0/audio?name=e32f242e458d4bf1bdf40f4c39f4102e", "Rector Cael": "https://www.aidocmaker.com/g0/audio?name=37f1fa8077854951bd08a37bbf8f1693", "Rowan Vale": "https://www.aidocmaker.com/g0/audio?name=4c2bdad87db041daadd1cbbee7593f6d", "Kestrel Ardan": "https://www.aidocmaker.com/g0/audio?name=b82b3f084f9d40fa9e94ef0d25f19c3b", "Maeve Sol": "https://www.aidocmaker.com/g0/audio?name=0f3fb5566b8d4e84b692e0dabd6dcee9", "Elias Thorne": "https://www.aidocmaker.com/g0/audio?name=db388282ce8c42e59eff85f31a605d3c", "Lyra Voss": "https://www.aidocmaker.com/g0/audio?name=3eb200b092a34fb8ada56df4210d1255", "Professor Ilyra Fen": "https://www.aidocmaker.com/g0/audio?name=c2c512d489a84b939fa8df708231a3ce", "Academy Voice": "https://www.aidocmaker.com/g0/audio?name=5566206c27c5492fa1fecb8029d14535", "Unknown": "https://www.aidocmaker.com/g0/audio?name=a0c02dfb936042adb326362a44099faf"};
 const ROLE_LINES = {"Narrator": ["Aetherium Academy was built where three ley lines cross beneath the mountain. On ordinary nights the towers glow softly. Tonight they burn like stars.", "The Night of the Hollow Star comes only once in a generation. Every window is open to the sky, every corridor is crowded, and the rules are temporarily a little more flexible.", "For a moment, the entire hall seems to lean toward you. Above the stained glass, thunder rolls over the mountain.", "The bells begin. One. Two. Three. Every light in the Great Hall goes out.", "The darkness lasts only three seconds. Long enough for someone to scream.", "Professor Veyne lies beside the brass lectern. No blood. No broken weapon. His untouched drink still catches the starlight.", "Somewhere above you, metal scrapes across stone.", "A metallic crash echoes through the western side of the tower.", "The wards on the wall flash from gold to red. A second layer of security begins to fail.", "The Great Hall is nearly empty. Rain taps against the stained glass. The last candles have burned down to short stubs."], "Rector Cael": ["Students, faculty, guests... welcome to the Astral Convergence.", "Tonight we celebrate knowledge, curiosity, and the dangerous habit of asking questions no one has thought to ask before.", "Professor Alaric Veyne requested the old observatory for a private demonstration. He assured me it would be 'impossible to ignore'.", "Florine. Margot. Selena. Your names are on that list.", "The signal came from the observatory.", "Florine. Margot. Selena. Veyne named you in his final note. You are coming with me.", "Exactly. Investigate what you need. Then tell me whether I should still call this an accident.", "You asked me to gather everyone. They are here.", "No theatre. Tell us who killed Alaric Veyne — and prove it."], "Rowan Vale": ["That sounds suspiciously like permission.", "No pressure, then.", "That is worse.", "That answer came remarkably fast.", "Your explanation. You had it ready before anyone asked the question.", "Excellent advice. Very specific, too.", "No. Listen. It is coming from inside the sealed observatory corridor.", "That sounds ominously efficient.", "I was in the Great Hall first, then I went to the western staircase. I took the long route because Lyra said the short corridor was sealed.", "Around that time I saw someone with prefect-level clearance pass a ward without being checked again. From that distance I could not see who it was.", "Veyne was infuriatingly brilliant. He could compliment you in one sentence and completely dismantle you in the same breath.", "For the last few weeks he had been obsessed with errors in old incident records. He said some reports were 'too clean'.", "Fine. I lied about one thing. I was on a forbidden staircase.", "Not to see Veyne. I was meeting someone who absolutely should not have been there. That secret is embarrassing, not deadly."], "Kestrel Ardan": ["Quiet. Veyne should be here.", "Much worse.", "Then why is the floor burned?", "Veyne kept files on everyone. Students. Professors. Prefects.", "Keeping them sealed outside the official archive is.", "Not helping.", "Then one lie is explained. Not the murder.", "I was in the archive until just before the first bell. The access log confirms it.", "There is a short blind spot between two ward checks, but only elevated passes can use it without creating a new record.", "Veyne requested a private file on old disciplinary incidents. Not one file. A whole series.", "He was specifically looking at corrections that had been added to the records later.", "I opened a sealed file without permission.", "That is why I did not immediately say where I was. But what I was looking for had nothing to do with Veyne's death."], "Maeve Sol": ["Everything sounds like permission to you.", "No one as in... the room is empty?", "Do not touch him yet.", "Perhaps they have.", "It does make you one of several people hiding something.", "Someone else is still moving through the tower.", "And enough to separate embarrassing secrets from lethal ones.", "I was leaving the healing wing when the lights went out. My route crossed the eastern corridor.", "There was no direct moonlight there at that time. The window faces the wrong side of the tower.", "There was no conventional poison in his body. His cup had not even been touched.", "Whatever killed him acted extremely quickly — faster than any ordinary drink or tincture.", "I treated someone without officially recording it.", "That is why my own timeline looks messy. I am protecting that person, not the murderer."], "Elias Thorne": ["Statistically, that explains a great deal.", "Then why does the life ward register no one inside?", "No one as in: the ward detects no living person.", "If any of you found something chemical: do not taste it.", "Or something.", "We have enough to reconstruct what happened.", "I closed the lab well before the third bell. The inventory system records that automatically.", "The problem is that some calibration materials are also used outside the lab. Access to my room proves very little.", "The residue on the observatory instrument is technical, not medicinal. Think alignment, stabilization, shielding.", "Someone wanted the device held in a specific position. Not someone poisoned.", "I took materials without signing them out.", "Stupid, yes. But it was for my own experiment. The amount and composition do not match what was found in the observatory."], "Lyra Voss": ["He also asked that three students be admitted after the first bell.", "Nobody move. Stay where you are.", "Enough. Speculation is not evidence.", "You look as though the three of you have seen three different ghosts.", "That is not unusual for a professor.", "That is the upper staircase.", "Decide now. We do not have another minute.", "Then stop circling around it and tell us what you actually know.", "At the first bell I was at the central ward console. After that I checked the northern security line.", "Prefect clearance bypasses some repeat checks. It is necessary in emergencies.", "Veyne turned everything into a moral issue. Even administrative mistakes.", "For the last few days he had been asking questions about incident reports. I told him the Rector decides those matters, not him.", "Everyone in this academy has something they would rather not see in an official report.", "My job is to preserve order. Sometimes that means deciding which problems become worse if they are made public."], "Professor Ilyra Fen": ["An astral attack during a convergence is possible. Rare, but possible.", "Because this room is older than most of the safety wards.", "Excuse me?", "And before anyone asks: yes, I argued with him last week. No, that does not make me his murderer.", "If this is about my statement: I have already explained why I lied.", "I was in the eastern corridor and saw light through the high window. That is all.", "Yes, my statement about the time was too certain. I had other reasons for being there and I did not want to explain them.", "Veyne and I disagreed fundamentally about Asterion. He believed old systems should be tested again. I considered that reckless.", "But disagreement is not a murder motive.", "I lied about why I was in that corridor.", "I was meeting someone in secret. The direction of the window makes my first statement impossible; I know that now too."], "Academy Voice": ["Emergency ward activated. All exterior corridors have been sealed.", "Warning. Forbidden-access seal breached."], "Unknown": ["Do not let them open the lens."]};
 
 const VOICE_DB_NAME='aetherium_voice_pack_v1';
@@ -918,9 +920,9 @@ async function downloadVoicePack(){
  if(!offlineVoiceReady && b)b.textContent='Could not save all voices — online fallback remains';
 }
 async function resolveRoleAudioSrc(role){
- const blob=await getCachedVoice(role);
- if(blob)return URL.createObjectURL(blob);
- return ROLE_AUDIO[role]||null;
+  // HOTFIX: always use the current GitHub file directly.
+  // This avoids stale/corrupt voice blobs cached by an older version.
+  return ROLE_AUDIO[role]||null;
 }
 
 const rolePlayers = {};
@@ -957,7 +959,19 @@ async function getRolePlayer(speaker){
   if(!rolePlayers[speaker]){
     const src=await resolveRoleAudioSrc(speaker);
     if(!src)return null;
-    const a=new Audio(src);a.preload='metadata';a.playsInline=true;rolePlayers[speaker]=a;
+    const a=new Audio();
+    a.preload='auto';
+    a.playsInline=true;
+    a.src=src;
+    // If the repo still contains filename.mp3.mp3, try that automatically.
+    a.addEventListener('error',()=>{
+      if(!a.dataset.triedDouble){
+        a.dataset.triedDouble='1';
+        a.src=src+'.mp3';
+        a.load();
+      }
+    });
+    rolePlayers[speaker]=a;
   }
   return rolePlayers[speaker];
 }
@@ -1215,13 +1229,51 @@ function nextDialogueLine(){
  const dur=lineDuration(text);document.getElementById("dialogueTimer").innerHTML=`<div style="--dur:${dur}ms"></div>`;
  if(!state.paused) playCinematicVoice(speaker,text,()=>{ if(!state.paused) dialogueTimer=setTimeout(nextDialogueLine,360); });
 }
-function repeatLine(){if(lastLine){activeVoiceSpeaker=lastLine[0];activeVoiceText=lastLine[1];replayCinematicVoice()}}
-function pauseDialogue(){
- state.paused=!state.paused;const b=document.getElementById("pauseBtn");
- if(state.paused){clearTimeout(dialogueTimer);pauseCinematicVoice();if(b)b.textContent="▶"}
- else{resumeCinematicVoice();if(b)b.textContent="⏸"; if(!activeRoleAudio && (!("speechSynthesis" in window)||!speechSynthesis.speaking)) dialogueTimer=setTimeout(nextDialogueLine,900)}
+function repeatLine(){
+ if(lastLine){
+   clearTimeout(dialogueTimer);
+   activeVoiceSpeaker=lastLine[0];
+   activeVoiceText=lastLine[1];
+   replayCinematicVoice();
+ }
 }
-function skipLine(){stopActiveVoice();speechSynthesis?.cancel();nextDialogueLine()}
+function previousDialogueLine(){
+ clearTimeout(dialogueTimer);
+ stopActiveVoice();
+ if("speechSynthesis" in window)speechSynthesis.cancel();
+ // dialogueIndex points to the NEXT line, so step back two positions.
+ dialogueIndex=Math.max(0,dialogueIndex-2);
+ state.paused=false;
+ syncPauseButtons();
+ nextDialogueLine();
+}
+function syncPauseButtons(){
+ const top=document.getElementById("pauseBtn");
+ const inline=document.getElementById("pauseBtnInline");
+ if(top)top.textContent=state.paused?"▶":"⏸";
+ if(inline)inline.textContent=state.paused?"▶ Resume":"⏸ Pause";
+}
+function pauseDialogue(){
+ state.paused=!state.paused;
+ if(state.paused){
+   clearTimeout(dialogueTimer);
+   pauseCinematicVoice();
+ }else{
+   resumeCinematicVoice();
+   if(!activeRoleAudio && (!("speechSynthesis" in window)||!speechSynthesis.speaking)){
+     dialogueTimer=setTimeout(nextDialogueLine,900);
+   }
+ }
+ syncPauseButtons();
+}
+function skipLine(){
+ clearTimeout(dialogueTimer);
+ stopActiveVoice();
+ if("speechSynthesis" in window)speechSynthesis.cancel();
+ state.paused=false;
+ syncPauseButtons();
+ nextDialogueLine();
+}
 function startGame(){toggleSound();startWorldIntro()}
 function goDeath(){lightning();runDialogue("death","observatory")}
 function inspect(item){
